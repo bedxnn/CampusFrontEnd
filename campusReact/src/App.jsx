@@ -1,5 +1,6 @@
 import Signup from "./auth/Signup"
 import Login from "./auth/Login"
+import Navbar from "./assets/components/Navbar"
 
 function App() {
 
@@ -8,6 +9,7 @@ function App() {
     <>
       <Signup/>
       <Login/>
+      <Navbar/>
     </>
   )
 }
