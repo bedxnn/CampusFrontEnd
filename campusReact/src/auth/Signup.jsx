@@ -18,6 +18,7 @@ function Signup() {
                 email: email,
                 password:password
             });
+              console.log("Full response:", res);   
             alert("Registration seccesfully");
         }catch(error){
             alert("registaration failed");
