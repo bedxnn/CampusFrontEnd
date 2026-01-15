@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import api from '../Apis';
+import { AuthContext } from './AuthContext';
 
 function Login() {
     const[email,setEmail] = useState("");
     const[password,setPassword] = useState("");
+
+    const{setIsLoggedIn, setToken} = useContext(AuthContext);
 
     const handleLogin = async (e) =>{
         e.preventDefault();
@@ -15,7 +18,10 @@ function Login() {
             
             });
               localStorage.setItem('token', res.data.token);
-                console.log("Token saved!");
+
+              setToken(res.data.token);
+              setIsLoggedIn(true);
+            
   
             alert("logged in succesfully");
         }catch(error){
