@@ -1,26 +1,67 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { AiFillHome } from 'react-icons/ai';
+import { FaUserCircle } from 'react-icons/fa';
+import { MdArticle, MdAddCircle } from 'react-icons/md';
 import { AuthContext } from '../../auth/AuthContext';
+import '../../assets/css/Navbar.css';
 
-function Navbar() {
+function Navbar({ onAddPostClick, showAddForm, showSuccess }) {
     const { isLoggedIn, setIsLoggedIn, setToken } = useContext(AuthContext);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('userEmail'); // Also clear email
         setToken(null);
         setIsLoggedIn(false);
         alert("Logged out!");
     };
 
     return (
-        <nav style={{ padding: '20px', background: '#333', color: 'white' }}>
-            <h2 style={{ display: 'inline', marginRight: '20px' }}>My App</h2>
+        <nav className="navbar">
+            <Link to="/" className="navbar-title navbar-icon-link">
+                <AiFillHome className="icon home-icon" />
+                <span className="text">Home</span>
+            </Link>
             
             {isLoggedIn ? (
-                // Show this if logged in
-                <button onClick={handleLogout}>Logout</button>
+                <>
+                    {/* Show Add Post button only when form is closed and no success message */}
+                    {!showAddForm && !showSuccess && (
+                        <button onClick={onAddPostClick} className="navbar-link navbar-icon-link add-post-btn">
+                            <MdAddCircle className="icon add-icon" />
+                            <span className="text">Add Post</span>
+                        </button>
+                    )}
+                    
+                    {/* Show success message */}
+                    {showSuccess && (
+                        <div className="success-message-navbar">
+                            <span className="success-text">✓ Successfully added!</span>
+                        </div>
+                    )}
+                    
+                    <Link to="/myPosts" className="navbar-link navbar-icon-link">
+                        <MdArticle className="icon posts-icon" />
+                        <span className="text">My Posts</span>
+                    </Link>
+                    <Link to="/profile" className="navbar-link navbar-icon-link">
+                        <FaUserCircle className="icon profile-icon" />
+                        <span className="text">Profile</span>
+                    </Link>
+                    <button onClick={handleLogout} className="logout-btn">Logout</button>
+                </>
             ) : (
-                // Show this if nottttt logged in
-                <span>Please login</span>
+                <>
+                    <Link to="/myPosts" className="navbar-link navbar-icon-link">
+                        <MdArticle className="icon posts-icon" />
+                        <span className="text">My Posts</span>
+                    </Link>
+                    <Link to="/profile" className="navbar-link navbar-icon-link">
+                        <FaUserCircle className="icon profile-icon" />
+                        <span className="text">Profile</span>
+                    </Link>
+                </>
             )}
         </nav>
     );

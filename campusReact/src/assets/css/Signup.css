@@ -1,0 +1,122 @@
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #000; 
+    padding: 20px;
+    margin-left: 540px;
+}
+
+.signup-card {
+    background: #0a0a0a; 
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 60px;
+    border: 1px solid #1a1a1a; 
+}
+
+.signup-title {
+    color: #fff;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.signup-subtitle {
+    color: rgba(255, 255, 255, 0.6); 
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-input {
+    padding: 14px 16px;
+    font-size: 16px;
+    border: 2px solid #1a1a1a; 
+    border-radius: 8px;
+    background: #141414; 
+    color: #fff; 
+    transition: all 0.3s ease;
+}
+
+.signup-input:focus {
+    outline: none;
+    border-color: #ec4899; 
+    background: #1a1a1a;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
+}
+
+.signup-input::placeholder {
+    color: rgba(255, 255, 255, 0.4); 
+}
+
+.signup-btn {
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.signup-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
+}
+
+.signup-btn:active {
+    transform: translateY(0);
+}
+
+.login-link {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.login-link a {
+    color: #ec4899; 
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+    color: #f472b6; 
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .signup-card {
+        padding: 30px 20px;
+    }
+    
+    .signup-title {
+        font-size: 28px;
+    }
+    
+    .signup-container {
+        margin-left: 0;
+    }
+}
