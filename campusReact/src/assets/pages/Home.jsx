@@ -150,24 +150,23 @@ function Home({ showForm, setShowForm }) {
         const receivedMessage = JSON.parse(message.body);
         console.log('Parsed message:', receivedMessage);
 
+        // Clear the fallback timeout since message arrived
+        if (window.lastMessageTimeout) {
+          clearTimeout(window.lastMessageTimeout);
+          window.lastMessageTimeout = null;
+        }
+
         // Add message to chat
         setMessages(prev => {
-          // Remove temp message if this is the real version
-          const withoutTemp = prev.filter(msg =>
-            !msg.id.toString().startsWith('temp-') ||
-            msg.content !== receivedMessage.content ||
-            Math.abs(new Date(msg.timestamp) - new Date(receivedMessage.timestamp)) > 5000
-          );
-
-          // Check if real message already exists
-          const exists = withoutTemp.some(msg => msg.id === receivedMessage.id);
+          // Check if message already exists by ID
+          const exists = prev.some(msg => msg.id === receivedMessage.id);
           if (exists) {
             console.log('Message already exists, skipping');
             return prev;
           }
 
           console.log('Adding new message to chat');
-          return [...withoutTemp, receivedMessage];
+          return [...prev, receivedMessage];
         });
       });
     };
@@ -183,24 +182,18 @@ function Home({ showForm, setShowForm }) {
 
   const sendMessage = () => {
     if (newMessage.trim() && stompClientRef.current && connected && selectedUser) {
+      const messageContent = newMessage.trim();
       const messageRequest = {
         receiverId: selectedUser.id,
-        content: newMessage.trim()
+        content: messageContent
       };
 
       console.log('Sending message:', messageRequest);
 
-      // Add message immediately for sender (optimistic update)
-      const tempMessage = {
-        id: `temp-${Date.now()}`,
-        content: newMessage.trim(),
-        timestamp: new Date().toISOString(),
-        sender: currentUser,
-        receiver: selectedUser
-      };
+      // Clear input immediately for better UX
+      setNewMessage('');
 
-      setMessages(prev => [...prev, tempMessage]);
-
+      // Send via WebSocket
       stompClientRef.current.publish({
         destination: '/app/send',
         body: JSON.stringify(messageRequest),
@@ -209,7 +202,14 @@ function Home({ showForm, setShowForm }) {
         }
       });
 
-      setNewMessage('');
+      // Fallback: If WebSocket doesn't return message in 2 seconds, fetch conversation
+      const timeoutId = setTimeout(() => {
+        console.log('WebSocket timeout, fetching conversation history');
+        fetchConversationHistory();
+      }, 2000);
+
+      // Store timeout to clear if message arrives
+      window.lastMessageTimeout = timeoutId;
     }
   };
 
