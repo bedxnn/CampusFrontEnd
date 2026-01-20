@@ -146,21 +146,29 @@ function Home({ showForm, setShowForm }) {
       setConnected(true);
 
       stompClient.subscribe('/user/queue/messages', (message) => {
+        console.log('Received message via WebSocket:', message.body);
         const receivedMessage = JSON.parse(message.body);
+        console.log('Parsed message:', receivedMessage);
 
-        // Add message to chat if it's part of this conversation
-        if (receivedMessage.sender.id === selectedUser?.id ||
-            receivedMessage.receiver.id === selectedUser?.id) {
-          // Avoid duplicates by checking if message with same ID exists
-          setMessages(prev => {
-            const isDuplicate = prev.some(msg =>
-              msg.id === receivedMessage.id ||
-              (msg.content === receivedMessage.content &&
-               Math.abs(new Date(msg.timestamp) - new Date(receivedMessage.timestamp)) < 1000)
-            );
-            return isDuplicate ? prev : [...prev, receivedMessage];
-          });
-        }
+        // Add message to chat
+        setMessages(prev => {
+          // Remove temp message if this is the real version
+          const withoutTemp = prev.filter(msg =>
+            !msg.id.toString().startsWith('temp-') ||
+            msg.content !== receivedMessage.content ||
+            Math.abs(new Date(msg.timestamp) - new Date(receivedMessage.timestamp)) > 5000
+          );
+
+          // Check if real message already exists
+          const exists = withoutTemp.some(msg => msg.id === receivedMessage.id);
+          if (exists) {
+            console.log('Message already exists, skipping');
+            return prev;
+          }
+
+          console.log('Adding new message to chat');
+          return [...withoutTemp, receivedMessage];
+        });
       });
     };
 
@@ -180,16 +188,18 @@ function Home({ showForm, setShowForm }) {
         content: newMessage.trim()
       };
 
-      // Optimistically add the message to the UI immediately
-      const optimisticMessage = {
-        id: Date.now(), // temporary ID
+      console.log('Sending message:', messageRequest);
+
+      // Add message immediately for sender (optimistic update)
+      const tempMessage = {
+        id: `temp-${Date.now()}`,
         content: newMessage.trim(),
         timestamp: new Date().toISOString(),
         sender: currentUser,
         receiver: selectedUser
       };
 
-      setMessages(prev => [...prev, optimisticMessage]);
+      setMessages(prev => [...prev, tempMessage]);
 
       stompClientRef.current.publish({
         destination: '/app/send',
