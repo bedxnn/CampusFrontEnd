@@ -150,12 +150,6 @@ function Home({ showForm, setShowForm }) {
         const receivedMessage = JSON.parse(message.body);
         console.log('Parsed message:', receivedMessage);
 
-        // Clear the fallback timeout since message arrived
-        if (window.lastMessageTimeout) {
-          clearTimeout(window.lastMessageTimeout);
-          window.lastMessageTimeout = null;
-        }
-
         // Add message to chat
         setMessages(prev => {
           // Check if message already exists by ID
@@ -202,14 +196,11 @@ function Home({ showForm, setShowForm }) {
         }
       });
 
-      // Fallback: If WebSocket doesn't return message in 2 seconds, fetch conversation
-      const timeoutId = setTimeout(() => {
-        console.log('WebSocket timeout, fetching conversation history');
+      // Auto-fetch conversation after sending to ensure message appears
+      setTimeout(() => {
+        console.log('Auto-fetching conversation to ensure message appears');
         fetchConversationHistory();
-      }, 2000);
-
-      // Store timeout to clear if message arrives
-      window.lastMessageTimeout = timeoutId;
+      }, 500);
     }
   };
 
