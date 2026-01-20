@@ -20,6 +20,7 @@ import './assets/css/ResetPassword.css';
 import './assets/css/AddPost.css';
 import './assets/css/Home.css';
 import './assets/css/Myposts.css';
+import './assets/css/Chat.css';
 
 function App() {
   const [showAddForm, setShowAddForm] = useState(false);

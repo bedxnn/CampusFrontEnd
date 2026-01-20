@@ -206,13 +206,13 @@ function Home({ showForm, setShowForm }) {
     setSearchQuery("");
   }
 
-  const handleMessage = (post) => {
-    setSelectedUser({
-      id: post.userId,
-      name: post.studentName
-    });
-    setShowChat(true);
-  }
+const handleMessage = (post) => {
+  setSelectedUser({
+    id: post.user.id, 
+    name: post.studentName
+  });
+  setShowChat(true);
+}
 
   const openConversation = (user) => {
     setSelectedUser(user);
