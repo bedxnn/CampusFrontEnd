@@ -36,21 +36,23 @@ function Navbar({ onAddPostClick, showAddForm, showSuccess }) {
             
             {isLoggedIn ? (
                 <>
-                    {/* Show Add Post button only when form is closed and no success message */}
-                    {!showAddForm && !showSuccess && (
-                        <button onClick={onAddPostClick} className="navbar-link navbar-icon-link add-post-btn">
-                            <MdAddCircle className="icon add-icon" />
-                            <span className="text">Add Post</span>
-                        </button>
-                    )}
-                    
+                    {/* Always show Add Post button */}
+                    <button
+                        onClick={onAddPostClick}
+                        className="navbar-link navbar-icon-link add-post-btn"
+                        disabled={showAddForm}
+                    >
+                        <MdAddCircle className="icon add-icon" />
+                        <span className="text">Add Post</span>
+                    </button>
+
                     {/* Show success message */}
                     {showSuccess && (
                         <div className="success-message-navbar">
                             <span className="success-text">✓ Successfully added!</span>
                         </div>
                     )}
-                    
+
                     <Link to="/myPosts" className="navbar-link navbar-icon-link">
                         <MdArticle className="icon posts-icon" />
                         <span className="text">My Posts</span>

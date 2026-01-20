@@ -152,6 +152,17 @@ body {
 .add-post-btn:hover {
   opacity: 0.8;
 }
+
+.add-post-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.add-post-btn:disabled:hover {
+  background: none;
+  transform: none;
+  box-shadow: none;
+}
 }
 
 /* Logout Modal */
