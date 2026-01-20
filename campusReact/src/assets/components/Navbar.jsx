@@ -7,18 +7,26 @@ import '../../assets/css/Navbar.css';
 
 function Navbar({ onAddPostClick, showAddForm, showSuccess }) {
     const { isLoggedIn, setIsLoggedIn, setToken } = useContext(AuthContext);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-    const handleLogout = () => {
-        if (window.confirm("Are you sure you want to logout?")) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('userEmail'); // Also clear email
-            setToken(null);
-            setIsLoggedIn(false);
-            alert("Logged out!");
-        }
+    const handleLogoutClick = () => {
+        setShowLogoutModal(true);
+    };
+
+    const confirmLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userEmail'); // Also clear email
+        setToken(null);
+        setIsLoggedIn(false);
+        setShowLogoutModal(false);
+    };
+
+    const cancelLogout = () => {
+        setShowLogoutModal(false);
     };
 
     return (
+        <>
         <nav className="navbar">
             <Link to="/" className="navbar-title navbar-icon-link">
                 <AiFillHome className="icon home-icon" />
@@ -46,7 +54,7 @@ function Navbar({ onAddPostClick, showAddForm, showSuccess }) {
                         <MdArticle className="icon posts-icon" />
                         <span className="text">My Posts</span>
                     </Link>
-                    <button onClick={handleLogout} className="logout-btn">Logout</button>
+                    <button onClick={handleLogoutClick} className="logout-btn">Logout</button>
                 </>
             ) : (
                 <>
@@ -57,6 +65,21 @@ function Navbar({ onAddPostClick, showAddForm, showSuccess }) {
                 </>
             )}
         </nav>
+
+        {/* Logout Confirmation Modal */}
+        {showLogoutModal && (
+            <div className="logout-modal-overlay">
+                <div className="logout-modal">
+                    <h3>Confirm Logout</h3>
+                    <p>Are you sure you want to logout?</p>
+                    <div className="logout-modal-buttons">
+                        <button onClick={confirmLogout} className="confirm-btn">Yes, Logout</button>
+                        <button onClick={cancelLogout} className="cancel-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
     );
 }
 
