@@ -171,6 +171,17 @@ function Home({ showForm, setShowForm }) {
         content: newMessage.trim()
       };
 
+      // Optimistically add the message to the UI immediately
+      const optimisticMessage = {
+        id: Date.now(), // temporary ID
+        content: newMessage.trim(),
+        timestamp: new Date().toISOString(),
+        sender: currentUser,
+        receiver: selectedUser
+      };
+
+      setMessages(prev => [...prev, optimisticMessage]);
+
       stompClientRef.current.publish({
         destination: '/app/send',
         body: JSON.stringify(messageRequest),
