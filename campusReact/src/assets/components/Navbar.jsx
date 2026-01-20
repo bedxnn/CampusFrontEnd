@@ -10,11 +10,14 @@ function Navbar({ onAddPostClick, showAddForm, showSuccess }) {
     const { isLoggedIn, setIsLoggedIn, setToken } = useContext(AuthContext);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userEmail'); // Also clear email
-        setToken(null);
-        setIsLoggedIn(false);
-        alert("Logged out!");
+        // Show confirmation dialog
+        if (window.confirm("Are you sure you want to logout?")) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userEmail'); // Also clear email
+            setToken(null);
+            setIsLoggedIn(false);
+            alert("Logged out!");
+        }
     };
 
     return (

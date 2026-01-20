@@ -197,18 +197,52 @@
   margin-top: 4px;
 }
 
-/* Conversation item */
-.conversation-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 20px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  border-bottom: 1px solid #1a1a1a;
+/* Conversations Table Container */
+.conversations-table-container {
+  width: 100%;
+  overflow-x: auto;
 }
 
-.conversation-item:hover {
-  background: rgba(99, 102, 241, 0.05);
+.conversations-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #0a0a0a;
+}
+
+.conversations-table thead {
+  background: #0f0f0f;
+  border-bottom: 2px solid #6366f1;
+}
+
+.conversations-table thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.conversations-table tbody tr.conversation-row {
+  border-bottom: 1px solid #1a1a1a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.conversations-table tbody tr.conversation-row:hover {
+  background: rgba(99, 102, 241, 0.08);
+  transform: translateX(2px);
+}
+
+.conversations-table tbody td {
+  padding: 12px 16px;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .conversation-avatar {
@@ -222,11 +256,10 @@
   justify-content: center;
   font-weight: 700;
   font-size: 16px;
-  margin-right: 12px;
   flex-shrink: 0;
 }
 
-.conversation-info {
+.user-details {
   flex: 1;
   min-width: 0;
 }
@@ -235,18 +268,36 @@
   font-weight: 600;
   font-size: 14px;
   color: #fff;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .conversation-preview {
-  font-size: 12px;
+  font-size: 11px;
   color: rgba(255, 255, 255, 0.4);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.chat-action-btn {
+  padding: 6px 14px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.chat-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
 /* Feed container */
