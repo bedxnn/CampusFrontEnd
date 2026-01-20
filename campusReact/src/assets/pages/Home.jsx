@@ -334,7 +334,7 @@ const handleMessage = (post) => {
                   </div>
                   <div className="conversation-info">
                     <div className="conversation-name">
-                      {user.name || `User ${index + 1}`}
+                      {user.name || (index + 1)}
                     </div>
                     <div className="conversation-preview">
                       Click to open chat
@@ -413,10 +413,10 @@ const handleMessage = (post) => {
             <div className="chat-header">
               <div className="chat-user-info">
                 <div className="chat-avatar">
-                  {selectedUser.name ? selectedUser.name.charAt(0).toUpperCase() : 'U'}
+                  {selectedUser.name ? selectedUser.name.charAt(0).toUpperCase() : selectedUser.id}
                 </div>
                 <div>
-                  <h4>{selectedUser.name || 'User'}</h4>
+                  <h4>{selectedUser.name || selectedUser.id}</h4>
                   <span className={`status ${connected ? 'online' : 'offline'}`}>
                     {connected ? '🟢 Connected' : '🔴 Disconnected'}
                   </span>
