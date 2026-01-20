@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AiFillHome } from 'react-icons/ai';
-import { FaUserCircle } from 'react-icons/fa';
 import { MdArticle, MdAddCircle } from 'react-icons/md';
 import { AuthContext } from '../../auth/AuthContext';
 import '../../assets/css/Navbar.css';
@@ -10,11 +9,13 @@ function Navbar({ onAddPostClick, showAddForm, showSuccess }) {
     const { isLoggedIn, setIsLoggedIn, setToken } = useContext(AuthContext);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userEmail'); // Also clear email
-        setToken(null);
-        setIsLoggedIn(false);
-        alert("Logged out!");
+        if (window.confirm("Are you sure you want to logout?")) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userEmail'); // Also clear email
+            setToken(null);
+            setIsLoggedIn(false);
+            alert("Logged out!");
+        }
     };
 
     return (
@@ -45,10 +46,6 @@ function Navbar({ onAddPostClick, showAddForm, showSuccess }) {
                         <MdArticle className="icon posts-icon" />
                         <span className="text">My Posts</span>
                     </Link>
-                    <Link to="/profile" className="navbar-link navbar-icon-link">
-                        <FaUserCircle className="icon profile-icon" />
-                        <span className="text">Profile</span>
-                    </Link>
                     <button onClick={handleLogout} className="logout-btn">Logout</button>
                 </>
             ) : (
@@ -56,10 +53,6 @@ function Navbar({ onAddPostClick, showAddForm, showSuccess }) {
                     <Link to="/myPosts" className="navbar-link navbar-icon-link">
                         <MdArticle className="icon posts-icon" />
                         <span className="text">My Posts</span>
-                    </Link>
-                    <Link to="/profile" className="navbar-link navbar-icon-link">
-                        <FaUserCircle className="icon profile-icon" />
-                        <span className="text">Profile</span>
                     </Link>
                 </>
             )}
