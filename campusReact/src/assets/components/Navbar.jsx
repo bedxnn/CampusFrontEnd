@@ -15,6 +15,7 @@ function Navbar({ onAddPostClick, showAddForm, showSuccess }) {
 
     const confirmLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
         localStorage.removeItem('userEmail'); // Also clear email
         setToken(null);
         setIsLoggedIn(false);

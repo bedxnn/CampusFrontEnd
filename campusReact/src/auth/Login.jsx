@@ -14,18 +14,20 @@ function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        
+
         try {
             const res = await api.post("/Login", {
                 email: email,
                 password: password
             });
-            
-            localStorage.setItem('token', res.data.token);
-            setToken(res.data.token);
+
+            // Store both access and refresh tokens
+            localStorage.setItem('token', res.data.accessToken);
+            localStorage.setItem('refreshToken', res.data.refreshToken);
+            setToken(res.data.accessToken);
             setIsLoggedIn(true);
             navigate("/");
-            
+
         } catch(error) {
             console.log("Login error", error);
             alert("Login failed");
