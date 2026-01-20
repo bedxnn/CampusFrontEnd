@@ -147,10 +147,19 @@ function Home({ showForm, setShowForm }) {
 
       stompClient.subscribe('/user/queue/messages', (message) => {
         const receivedMessage = JSON.parse(message.body);
-        
-        if (receivedMessage.sender.id === selectedUser?.id || 
+
+        // Add message to chat if it's part of this conversation
+        if (receivedMessage.sender.id === selectedUser?.id ||
             receivedMessage.receiver.id === selectedUser?.id) {
-          setMessages(prev => [...prev, receivedMessage]);
+          // Avoid duplicates by checking if message with same ID exists
+          setMessages(prev => {
+            const isDuplicate = prev.some(msg =>
+              msg.id === receivedMessage.id ||
+              (msg.content === receivedMessage.content &&
+               Math.abs(new Date(msg.timestamp) - new Date(receivedMessage.timestamp)) < 1000)
+            );
+            return isDuplicate ? prev : [...prev, receivedMessage];
+          });
         }
       });
     };
