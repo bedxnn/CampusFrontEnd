@@ -323,18 +323,18 @@ const handleMessage = (post) => {
                 <small>Start messaging to see conversations here</small>
               </div>
             ) : (
-              conversations.map((user) => (
-                <div 
-                  key={user.id} 
+              conversations.map((user, index) => (
+                <div
+                  key={user.id}
                   className="conversation-item"
                   onClick={() => openConversation(user)}
                 >
                   <div className="conversation-avatar">
-                    {(user.name || user.email || 'U').charAt(0).toUpperCase()}
+                    {user.name ? user.name.charAt(0).toUpperCase() : (index + 1)}
                   </div>
                   <div className="conversation-info">
                     <div className="conversation-name">
-                      {user.name || user.email}
+                      {user.name || `User ${index + 1}`}
                     </div>
                     <div className="conversation-preview">
                       Click to open chat
@@ -413,10 +413,10 @@ const handleMessage = (post) => {
             <div className="chat-header">
               <div className="chat-user-info">
                 <div className="chat-avatar">
-                  {(selectedUser.name || 'U').charAt(0).toUpperCase()}
+                  {selectedUser.name ? selectedUser.name.charAt(0).toUpperCase() : 'U'}
                 </div>
                 <div>
-                  <h4>{selectedUser.name || selectedUser.email}</h4>
+                  <h4>{selectedUser.name || 'User'}</h4>
                   <span className={`status ${connected ? 'online' : 'offline'}`}>
                     {connected ? '🟢 Connected' : '🔴 Disconnected'}
                   </span>
